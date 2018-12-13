@@ -31,13 +31,13 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[12pt]{report}
-\usepackage[english]{babel}
-\usepackage{apacite}
+\documentclass[12pt]{article} 
+ \usepackage[english]{babel}
+ \usepackage{apacite}
 \usepackage{array,etoolbox}
-\preto\tabular{\setcounter{magicrownumbers}{0}}
-\newcounter{magicrownumbers}
-\usepackage[utf8x]{inputenc}
+ \preto\tabular{\setcounter{magicrownumbers}{0}}
+ \newcounter{magicrownumbers}
+ \usepackage[utf8x]{inputenc}
 \usepackage{geometry}
 	\geometry{
 		a4paper,
@@ -45,13 +45,13 @@
 		left = 30mm,
 		top = 30mm
 	}
-\usepackage[sort, numbers]{natbib}
-\usepackage{tgbonum}
+ \usepackage[sort, numbers]{natbib}
+  \usepackage{tgbonum}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \graphicspath{{images/}}
 \usepackage[colorinlistoftodos]{todonotes}
-\usepackage{amsmath}
+% \usepackage{amsmath}
 
 \begin{document}
 
@@ -123,19 +123,15 @@ Dr. Byron \textsc{Wallace} % Reader's Name
 %\vfill % Fill the rest of the page with whitespace
 
 \end{titlepage}
+% \input{abstract}
 
-\include{abstract}
+\input{introduction}
+\input{related}
+\input{method}
+\input{experiments}
+\input{plan}
 
-\include{introduction}
-
-\include{related}
-
-\include{method}
-
-\include{experiments}
-
-\include{plan}
-
+\newpage
 \bibliographystyle{unsrt}
 \bibliography{References}
 

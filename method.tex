@@ -1,4 +1,4 @@
-\chapter{Proposed Method}
+\section{Proposed Method}
 
 In this method, we propose to enhance the bag-of-words model for text classification by presenting a novel regularizer which would assign similar coefficients to words used in similar context.
 
@@ -16,23 +16,22 @@ Formally, the problem we are trying to solve can be formulated as follows: Given
 \theta^{(i)} = f(v^{(i)})
 \end{equation}
 
-This would act as a regularization constraint so that similar word representations would have similar coefficients, which satisfies Lipschitz condition,
+This would act as a regularization constraint so that similar word representations would have similar coefficients, which satisfies a continuity condition
 
 \begin{equation}
-|f(v^{(1)}) - f(v^{(2)}))|\ \leq\ \epsilon|v^{(1)}-v^{(2)}|
+|f(v^{(1)}) - f(v^{(2)}))|\ \leq\ sim(v^{(1)}, v^{(2)})
 \end{equation}
 
-where, $|v^{(1)}-v^{(2)}|$ would be the similarity between words $v^{(1)}$ and $v^{(2)}$
+where, $sim$ dictates the similarity between words $v^{(1)}$ and $v^{(2)}$ and $ f(v^{(1)}), f(v^{(2)})$ are coefficients of their respective words as per (\ref{lb1})
 
-$\quad\qquad\ f(v^{(1)})$ and $f(v^{(2)})$ are coefficients of their respective words as per (\ref{lb1})
-
-$\quad\qquad\ \epsilon $ is the smallest constant satisfying the equation (Lipschitz constant)\\
+% $\quad\qquad\ \epsilon $ is the smallest constant satisfying the equation (Lipschitz constant)\\
 
 Since words used in similar context will have similar word-vectors and by making the regression co-efficient of a word to be a function of its word-vector representation, we can regularize the regression coefficients of two similar words to have similar values. So, if one word occurs more frequently and has higher regression co-efficient, the other word even if it is very rare would be considered an important feature and would have a higher regression co-efficient. This would improve the classification performance in cases where these rare words occur more frequently in the test set.\\
 
-Thus, the end goal would be to regularize the coefficients using word-vectors and train different classifiers like Regression, Neural Networks, GDA, SVM, Naive Bayes, etc. However, for the thesis our objective is to learn the function $f(v^{(i)})$ and use it to regularize regression on text. \\
+% Our goal is to regularize the text classifier coefficients using word-vectors. However, for the thesis our objective is to learn the function $f(v^{(i)})$ and use it to regularize regression on text. \\
 
-\noindent We plan to learn the function $f(v^{(i)})$ through:
+
+\noindent We explore learning the function $f(v^{(i)})$ via several algorithms:
 
 \begin{itemize}
 \item regression
@@ -41,8 +40,8 @@ Thus, the end goal would be to regularize the coefficients using word-vectors an
 \end{itemize}
 
 \noindent Fig. 3.1 is a network diagram showing how the coefficients ($\theta_{i}$) would be obtained for a word$_{i}$ representation using both the above mentioned methods.\\
-
-\noindent\textbf{Regression}: We will initially determine if we can learn the coefficients from the word representation of the features using a linear regressor, i.e., 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent\textbf{Learning f as Regression}: We will initially determine if we can learn the coefficients from the word representation of the features using a linear regressor, i.e., 
 
 \begin{equation}
 \theta^{(i)} = w_{1}v_{1}^{(i)} + w_{2}v_{2}^{(i)} + ... + w_{d}v_{d}^{(i)} = \sum_{d=1}^{D} w_{d}^{(i)}v_{d}^{(i)}
@@ -62,8 +61,8 @@ Cost(h_{(\theta| w)}(x), y) =
 -log(1-h_{(\theta| w)}(x)), $ if y=0$
 \end{cases}
 \end{equation}\\
-
-\noindent\textbf{2-layer neural network}: If there is a non-linear relationship between the coefficients and word representations, we can learn them through a multi-layer neural network. We start with a 2-layer neural network having one hidden layer and one output layer. The hidden layer requires the d-dimensional word$_{i}$ representations as input and outputs an activation value.\\\\ Let $a^{[1](i)} = (a^{[1](i)}_{1},a^{[1](i)}_{2},a^{[1](i)}_{3}..)$ be the activation of the neurons in the hidden layer, and $a^{[2](i)}$ be the activation of the neurons in the output layer.\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent\textbf{Learning f as 2-layer neural network}: If there is a non-linear relationship between the coefficients and word representations, we can learn them through a multi-layer neural network. We start with a 2-layer neural network having one hidden layer and one output layer. The hidden layer requires the d-dimensional word$_{i}$ representations as input and outputs an activation value.\\\\ Let $a^{[1](i)} = (a^{[1](i)}_{1},a^{[1](i)}_{2},a^{[1](i)}_{3}..)$ be the activation of the neurons in the hidden layer, and $a^{[2](i)}$ be the activation of the neurons in the output layer.\\
 
 \noindent where, a = g(z), where g is some activation function (like sigmoid, relu, tanh)
 
@@ -86,7 +85,7 @@ z^{[2](i)} & = W^{[2]}a^{[1](i)} + b^{[2]}\\
 
 \noindent We can then train a neural network model to learn the coefficients ($\theta^{(i)}$) which would help minimize the cost function in (\ref{cost_fn_eq})
 
-\section{Implementation}
+% \section{Implementation}
 
 \subsection{Obtain word-vectors}
 

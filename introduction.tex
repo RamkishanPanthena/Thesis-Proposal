@@ -1,8 +1,8 @@
-\chapter{Introduction}
+\section{Introduction}
 
 The goal of text classification is to classify text documents into one or more classes according to their content. For this purpose, a document must be transformed into a representation which is suitable for the learning algorithm and the classification task. Representing documents as bag-of-words is a commonly used method in document classification where the frequency of occurrence of each word is used as a feature for training a classifier. However, one should note that when using this representation, some document information is lost as the model disregards grammar and word ordering.
 
-\section{Problem Statement}
+\subsection{Problem Statement}
 
 Although the bag-of-words model is widely used and performs exceptionally well in most text classification problems, it contains several limitations. As per Zipf's law \cite{li1992random}, given a large sample of words used, the frequency of any word is inversely proportional to its rank in the frequency table. So, word number n has a frequency proportional to 1/n. Thus, a large vocabulary can cause extremely sparse representations. 
 
@@ -10,7 +10,7 @@ The classification accuracy we observe on the test set largely depends on the qu
 
 Thus, in such a case any linear classifier like logistic regression, naive bayes, linear SVM would treat each word independently and assign them different coefficients based on the impact of the individual word on the response variable. As the training data for rare words would be sparse, their coefficients would be near 0 implying that the impact of these features is small. This may not be the case as these rare words might be misrepresented due to sparse data. Our model tries to solve this problem by using a word-vector regularizer that assigns similar coefficients to words which are used in a similar context, thereby boosting the effect of similar but rare features on the final prediction.
 
-Suppose we use logistic regression for binary text classification on a bag-of-words model. Let $\theta^{(i)}$ be the regression coefficients of word$_{i}$ which determines the association between each feature and what we are trying to predict.
+We use logistic regression for binary text classification on a bag-of-words model. Let $\theta^{(i)}$ be the regression coefficients of word$_{i}$ which determines the association between each feature value (word occurrence in document) and what the target we are trying to predict.
 
 \noindent The cost function for logistic regression would be given as:
 
@@ -23,7 +23,7 @@ Cost(h_{(\theta)}(x), y) =
 \end{cases}
 \end{equation}\\
 
-In general, the features with larger coefficients are more important because they occur more frequently and make a more significant contribution in predicting the correct class. However if a word$_{k}$ is rare, its corresponding regression coefficient ($\theta^{(k)}$) would be very small. Our goal through this thesis is to boost the regression co-efficients of such similar but rare words.\\
+In general, the features with larger coefficients are more important because they make a significant contribution in predicting the correct class. However if a word$_{k}$ is rare, its corresponding regression coefficient ($\theta^{(k)}$) could be very small or very large (minimizing the loss) due to lack of evidence in the training set; which is not useful for predictions. Our plan here is to constrain such coefficients by the word semantic similarity with other more frequent terms, thus simulating a higher occurence and prohibiting extreme behavior. This also helps with non-frequent synonym words in making their coefficients more uniform. \\
 
 \noindent \textbf{Example:} In order to get a better understanding, consider a classification problem where we are trying to identify whether a document is talking about animals or not. For this example, let's say we only have five features. The bag-of-words representation using term frequencies for 5 different documents would look like:
 

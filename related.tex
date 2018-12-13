@@ -1,5 +1,4 @@
-\chapter{Related work}
-
+\subsection{Related work}
 A number of approaches have been proposed to increase the classification accuracy on the bag-of-words model.
 
 To aggressively reduce the dimensionality of models, Joachims \cite{joachims1996probabilistic} (1996), Yang and Pedersen\cite{yang1997comparative} (1997) suggested pruning of infrequent words. Mansuy and Hilder \cite{mansuy2006characterization} (2006) recommended removing of stop words and part-of-speech tags. Porter \cite{porter1980algorithm} (1980) proposed removal of suffixes from words. However, Joachims \cite{joachims1996probabilistic} test results revealed that the performance of the system is higher when more words are used as features, with the highest performance achieved using the largest feature set. Any approach that limited the number of words to the most important ones was likely to reduce the classification accuracy as these pruned words lose their ability to contribute to the classification of text. Quinlan \cite{quinlan2014c4} (1993) suggested choosing words which have high mutual information with the target concept. However, picking words with high mutual information had relatively poor performance due to its bias towards favoring rare terms, and its sensitivity to probability estimation errors.
