@@ -45,7 +45,7 @@
 		left = 30mm,
 		top = 30mm
 	}
-\usepackage[super,sort]{natbib}
+\usepackage[sort, numbers]{natbib}
 \usepackage{tgbonum}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -128,17 +128,7 @@ Dr. Byron \textsc{Wallace} % Reader's Name
 
 \include{introduction}
 
-\chapter{Related work}
-
-A number of approaches have been proposed to increase the classification accuracy on the bag-of-words model.
-
-To aggressively reduce the dimensionality of models, Joachims \cite{joachims1996probabilistic} (1996), Yang and Pedersen\cite{yang1997comparative} (1997) suggested pruning of infrequent words. Mansuy and Hilder \cite{mansuy2006characterization} (2006) recommended removing of stop words and part-of-speech tags. Porter \cite{porter1980algorithm} (1980) proposed removal of suffixes from words. However, Joachims \cite{joachims1996probabilistic} test results revealed that the performance of the system is higher when more words are used as features, with the highest performance achieved using the largest feature set. Any approach that limited the number of words to the most important ones was likely to reduce the classification accuracy as these pruned words lose their ability to contribute to the classification of text. Quinlan \cite{quinlan2014c4} (1993) suggested choosing words which have high mutual information with the target concept. However, picking words with high mutual information had relatively poor performance due to its bias towards favoring rare terms, and its sensitivity to probability estimation errors.
-
-In an attempt to address the issue of related concepts in text classification, many researchers have incorporated features using dictionaries and encyclopedias. Mavroeidis et. al \cite{mavroeidis2005word} (2005) proposed to extend the traditional bag of words representation by incorporating syntactic and semantic relationships among words using a Word Sense Disambiguation approach. Wang and Domeniconi \cite{wang2008building} (2008) explored a similar approach by embedding background knowledge derived from Wikipedia to enrich the representation of documents. Although empirical results have shown improvements in some cases, the applicability of using dictionaries to improve classification accuracy is limited. Ontology is manually built, and the coverage is far too restricted. Recently, Heal et. al \cite{heap2017word} (2017) introduced a method for enriching the bag-of-words model by complementing rare term information with related terms from Word Vector models. However, it was revealed that these methods achieved significantly better results only when the training sets were small. There wasn't enough evidence of achieving better results on large datasets.
-
-In addition to incorporating related concepts to improve classification performance, other approaches have also been proposed. One of these approaches considers using part-of-speech tags associated with words contained in a document (Scott and Matwin \cite{scott1998text} 1998), (Jensen and Martinez \cite{jensen2000improving} 2000). Since words can have multiple meanings depending upon how and where they are used in a sentence, the part-of-speech may be relevant to text classification. However, a different paper from Mansuy \cite{mansuy2006characterization} revealed that there was no significant difference between the accuracy of the classifiers whether part-of-speech tags are utilized or not.
-
-To deal with overfitting, different regularization techniques have also been proposed. Regularization adds a penalty on the different parameters of the model to reduce the freedom of the model. Hence, the model will be less likely to fit the noise and improve its generalization abilities. The Lasso regularization acts as a way of feature selection by shrinking some parameters to zero, whereas the Ridge regularization will force the parameters to be relatively small but are not cut to zero.
+\include{related}
 
 \include{method}
 
