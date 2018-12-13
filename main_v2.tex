@@ -74,7 +74,7 @@
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.4cm]
-{\Large \bfseries Word-vector Regularizer of synonymous but rare words in the Bag-of-Words model for Classification Problems}\\[0.4cm] % Title of your document
+{\Large \bfseries Word-vector Regularization for text classification algorithms}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
  
 %----------------------------------------------------------------------------------------
@@ -92,6 +92,13 @@ Ramkishan \textsc{Panthena} % Your name
 \begin{flushright} \large
 \emph{Advisor:} \\
 Dr. Virgil \textsc{Pavlu} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[.5cm]
+
+\begin{minipage}{0.82\textwidth}
+\begin{flushright} \large
+\emph{Official Reader:} \\
+Dr. Byron \textsc{Wallace} % Reader's Name
 \end{flushright}
 \end{minipage}\\[2cm]
 
@@ -137,7 +144,26 @@ Although the bag-of-words model is widely used and performs exceptionally well i
 
 The classification accuracy we observe on the test set largely depends on the quality of training sets we have used to build our models. That is, if the training information is sparse, then we can expect the category model to be a poor representation of a category thereby leading to poor classification accuracy. Words that occur rarely do not give a learning algorithm enough information to determine its influence on classification correctly.
 
-Thus, in such a case any linear classifier like logistic regression, naive bayes, linear SVM would treat each word independently and assign them different coefficients based on the impact of the individual word on the response variable. As the training data for rare words would be sparse, their coefficients would be near 0 implying that the impact of these features is small. This may not be the case as these rare words might be misrepresented due to sparse data. Our model tries to solve this problem by using a word-vector regularizer that assigns similar coefficients to words which are used in a similar context, thereby boosting the effect of similar but rare features on the final prediction.
+Thus, in such a case any linear classifier like logistic regression, naive bayes, linear SVM would treat each word independently and assign them different coefficients based on the impact of the individual word on the response variable. As the training data for rare words would be sparse, their coefficients would be near 0 implying that the impact of these features is small. This may not be the case as these rare words might be misrepresented due to sparse data. Our model tries to solve this problem by using a word-vector regularizer that assigns similar coefficients to words which are used in a similar context, thereby boosting the effect of similar but rare features on the final prediction.\\
+
+\noindent \textbf{Example:} In order to get a better understanding, consider a classification problem where we are trying to identify whether a document is talking about animals or not. For this example, let's say we only have five features. The bag-of-words representation using term frequencies for 5 different documents would look like:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{l|lllll}
+ & dog & \multicolumn{1}{c}{football} & \multicolumn{1}{c}{canine} & movies & cat \\\hline
+D1 & 3 & 0 & 0 & 0 & 4 \\
+D2 & 0 & 0 & 0 & 6 & 0 \\
+D3 & 5 & 0 & 1 & 0 & 6 \\
+D4 & 0 & 8 & 0 & 0 & 0 \\
+D5 & 0 & 7 & 0 & 4 & 0
+\end{tabular}
+\caption{Toy dataset}
+\end{table}
+
+From the above example, we can see that the word ‘canine’ occurs only once in one of the document. If we train a linear classifier on the above dataset, then ‘canine’ would have a very low feature importance due to its sparse representation. When we test this classifier on a document where ‘canine’ is more densely represented as compared to ‘dog’ or ‘cat’, then that document would get misclassified as “not talking about animals”. 
+
+In contrast, since our model would assign similar weights to similar words and considering ‘dog’ and ‘canine’ are synonyms, our model would assign a higher feature importance to ‘canine’, thereby increasing the probability of making a correct prediction on a new document where ‘canine’ is more densely represented as compared to the train data.
 
 \chapter{Related work}
 
@@ -147,7 +173,9 @@ To aggressively reduce the dimensionality of models, Joachims \cite{joachims1996
 
 In an attempt to address the issue of related concepts in text classification, many researchers have incorporated features using dictionaries and encyclopedias. Mavroeidis et. al \cite{mavroeidis2005word} (2005) proposed to extend the traditional bag of words representation by incorporating syntactic and semantic relationships among words using a Word Sense Disambiguation approach. Wang and Domeniconi \cite{wang2008building} (2008) explored a similar approach by embedding background knowledge derived from Wikipedia to enrich the representation of documents. Although empirical results have shown improvements in some cases, the applicability of using dictionaries to improve classification accuracy is limited. Ontology is manually built, and the coverage is far too restricted. Recently, Heal et. al \cite{heap2017word} (2017) introduced a method for enriching the bag-of-words model by complementing rare term information with related terms from Word Vector models. However, it was revealed that these methods achieved significantly better results only when the training sets were small. There wasn't enough evidence of achieving better results on large datasets.
 
-In addition to incorporating related concepts to improve classification performance, other approaches have also been proposed. One of these approaches considers using part-of-speech tags associated with words contained in a document (Scott and Matwin \cite{scott1998text} 1998), (Jensen and Martinez \cite{jensen2000improving} 2000). Since words can have multiple meanings depending upon how and where they are used in a sentence, the part-of-speech may be relevant to text classification. However, a different paper from Mansuy \cite{mansuy2006characterization} revealed that there was no significant difference between the accuracy of the classifiers whether part-of-speech tags are utlized or not.
+In addition to incorporating related concepts to improve classification performance, other approaches have also been proposed. One of these approaches considers using part-of-speech tags associated with words contained in a document (Scott and Matwin \cite{scott1998text} 1998), (Jensen and Martinez \cite{jensen2000improving} 2000). Since words can have multiple meanings depending upon how and where they are used in a sentence, the part-of-speech may be relevant to text classification. However, a different paper from Mansuy \cite{mansuy2006characterization} revealed that there was no significant difference between the accuracy of the classifiers whether part-of-speech tags are utilized or not.
+
+To deal with overfitting, different regularization techniques have also been proposed. Regularization adds a penalty on the different parameters of the model to reduce the freedom of the model. Hence, the model will be less likely to fit the noise and improve its generalization abilities. The Lasso regularization acts as a way of feature selection by shrinking some parameters to zero, whereas the Ridge regularization will force the parameters to be relatively small but are not cut to zero.
 
 \chapter{Proposed Method}
 
@@ -181,14 +209,17 @@ $\quad\qquad\ \epsilon $ is the smallest constant satisfying the equation (Lipsc
 
 Since words used in similar context will have similar word-vectors and by making the regression co-efficient of a word to be a function of its word-vector representation, we can regularize the regression coefficients of two similar words to have similar values. So, if one word occurs more frequently and has higher regression co-efficient, the other word even if it is very rare would be considered an important feature and would have a higher regression co-efficient. This would improve the classification performance in cases where these rare words occur more frequently in the test set.\\
 
-\noindent Thus, our objective is to learn the function $f(v^{(i)})$ through:
+Thus, the end goal would be to regularize the coefficients using word-vectors and train different classifiers like Regression, Neural Networks, GDA, SVM, Naive Bayes, etc. However, for the thesis our objective is to learn the function $f(v^{(i)})$ and use it to regularize regression on text. \\
+
+\noindent We plan to learn the function $f(v^{(i)})$ through:
 
 \begin{itemize}
 \item regression
 \item 2-layer neural network
+\item boosting trees
 \end{itemize}
 
-Below is a network diagram showing how the coefficients ($\theta_{i}$) would be obtained for a word$_{i}$ representation using both the above mentioned methods:
+\noindent Fig. 3.1 is a network diagram showing how the coefficients ($\theta_{i}$) would be obtained for a word$_{i}$ representation using both the above mentioned methods.\\
 
 \noindent\textbf{Regression}: We will initially determine if we can learn the coefficients from the word representation of the features using a linear regressor, i.e., 
 
@@ -211,7 +242,7 @@ Cost(h_{(\theta| w)}(x), y) =
 \end{cases}
 \end{equation}\\
 
-\noindent\textbf{2-layer neural network}: If there is a non-linear relationship between the coefficients and word representations, we can learn them through a multi-layer neural network. We start with a 2 layer neural network having one hidden layer and one output layer. The hidden layer requires the d-dimensional word$_{i}$ representations as input and outputs an activation value.\\\\ Let $a^{[1](i)} = (a^{[1](i)}_{1},a^{[1](i)}_{2},a^{[1](i)}_{3}..)$ be the activation of the neurons in the hidden layer, and $a^{[2](i)}$ be the activation of the neurons in the output layer.\\
+\noindent\textbf{2-layer neural network}: If there is a non-linear relationship between the coefficients and word representations, we can learn them through a multi-layer neural network. We start with a 2-layer neural network having one hidden layer and one output layer. The hidden layer requires the d-dimensional word$_{i}$ representations as input and outputs an activation value.\\\\ Let $a^{[1](i)} = (a^{[1](i)}_{1},a^{[1](i)}_{2},a^{[1](i)}_{3}..)$ be the activation of the neurons in the hidden layer, and $a^{[2](i)}$ be the activation of the neurons in the output layer.\\
 
 \noindent where, a = g(z), where g is some activation function (like sigmoid, relu, tanh)
 
@@ -244,7 +275,10 @@ Also it has been seen that a smaller domain specific Word Vector model is modell
 
 \subsection{Train new model}
 
-Once the features have been extracted using the bag-of-words model and their corresponding word-vectors obtained, we can train a neural network model based on the cost function in (\ref{cost_fn_eq})
+Once the features have been extracted using the bag-of-words model and their corresponding word-vectors obtained, we can train a neural network model based on the cost function in (\ref{cost_fn_eq})\\
+
+\noindent Below is the link to its source code on GitHub:
+
 
 \chapter{Experiments}
 
@@ -256,12 +290,22 @@ We compare our model to the vanilla logistic regression algorithm by implementin
 
 To evaluate the performance of both models for multi-class problems, we use accuracy and f1 measures.
 
-For multi-label problems, predictions for an instance is a set of labels, and therefore the prediction can be fully correct, partially-correct or fully-incorrect. The accuracy (Exact Match ratio/Set-accuracy) would be the ratio of fully correct labels to the number of instances. To evaluate the performance of the partially correct labels, we compute F1 measure(Instance-F1) between the predicted and correct set of labels 
-and compute the average across all instances.
+For multi-label problems, predictions for an instance is a set of labels, and therefore the prediction can be fully correct, partially-correct or fully-incorrect. Thus, to better evaluate our models we will use the following three measures: \textit{set accuracy}, which is the ratio of perfectly matched instances to the total number of instances; \textit{instance-f1}, which evaluates the performance of partially correct predictions averaged over instances; \textit{label-f1}, which evaluates the performance of partially correct predictions averaged over labels.\\
+
+For a dataset with ground truth labels $y^{(n)}$ and predictions $\hat{y}^{(n)}$, and n instances where n = 1,2,...,N, these three measures are defined as:
+
+\begin{alignat}{2}
+set\; accuracy & = \frac{1}{N} \sum_{n=1}^{N} {I(y^{(n)} = \hat{y}^{(n)})}\\
+instance \mbox{-} F1 & = \frac{1}{N} \sum_{n=1}^{N} \frac{2\sum_{l=1}^{L} {y^{(n)}_{l} \hat{y}^{(n)}_{l}}}{\sum_{l=1}^{L} {y^{(n)}_{l}} + \sum_{l=1}^{L} {\hat{y}^{(n)}_{l}}}\\
+label \mbox{-} F1 & = \frac{1}{N} \sum_{n=1}^{N} \frac{2\sum_{n=1}^{N} {y^{(n)}_{l} \hat{y}^{(n)}_{l}}}{\sum_{n=1}^{N} {y^{(n)}_{l}} + \sum_{n=1}^{N} {\hat{y}^{(n)}_{l}}}
+\end{alignat}
+
+\noindent where for each instance $n$, $y^{(n)}_{l}$ = 1 if label $l$ is a given label in ground truth; \\
+$\hat{y}^{(n)}_{l}$ = 1 if label $l$ is a predicted label.
 
 \section{Datasets}
 
-Below is a table showing how our model performed as compared to logsitic regression:
+Below is a table showing how our model performed as compared to logistic regression. 
 
 \begin{table}[htbp]
 \centering
@@ -274,6 +318,16 @@ Medical & 66.06 & 67.87 & 74.66 & 76.91
 }
 \caption{\label{tab:widgets}Set-Accuracy and Instance-F1 Results.}
 \end{table}
+
+\noindent We also trained an artificial dataset to mimic sparse representation using 20newsgroup data by finding the most similar words in the train set with cosine similarity greater than 0.3 and making the feature values of all but one synonym to be equal to zero. We then compared the performance of our model with logistic regression before and after zeroing feature values of similar words. The below results show that our model was able to get a higher test accuracy even through the sparse representations in the train set.\\
+
+\noindent \textbf{Before zeroing features:}\\
+Logistic Regression Test accuracy: 82.6\\
+Our model Test accuracy: 84.01\\
+
+\noindent \textbf{After zeroing features:}\\
+Logistic Regression Test accuracy: 75.67\\
+Our model Test accuracy: 83.54\\
 
 \chapter{Plan}
 
