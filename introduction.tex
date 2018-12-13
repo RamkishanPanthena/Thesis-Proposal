@@ -8,7 +8,22 @@ Although the bag-of-words model is widely used and performs exceptionally well i
 
 The classification accuracy we observe on the test set largely depends on the quality of training sets we have used to build our models. That is, if the training information is sparse, then we can expect the category model to be a poor representation of a category thereby leading to poor classification accuracy. Words that occur rarely do not give a learning algorithm enough information to determine its influence on classification correctly.
 
-Thus, in such a case any linear classifier like logistic regression, naive bayes, linear SVM would treat each word independently and assign them different coefficients based on the impact of the individual word on the response variable. As the training data for rare words would be sparse, their coefficients would be near 0 implying that the impact of these features is small. This may not be the case as these rare words might be misrepresented due to sparse data. Our model tries to solve this problem by using a word-vector regularizer that assigns similar coefficients to words which are used in a similar context, thereby boosting the effect of similar but rare features on the final prediction.\\
+Thus, in such a case any linear classifier like logistic regression, naive bayes, linear SVM would treat each word independently and assign them different coefficients based on the impact of the individual word on the response variable. As the training data for rare words would be sparse, their coefficients would be near 0 implying that the impact of these features is small. This may not be the case as these rare words might be misrepresented due to sparse data. Our model tries to solve this problem by using a word-vector regularizer that assigns similar coefficients to words which are used in a similar context, thereby boosting the effect of similar but rare features on the final prediction.
+
+Suppose we use logistic regression for binary text classification on a bag-of-words model. Let $\theta^{(i)}$ be the regression coefficients of word$_{i}$ which determines the association between each feature and what we are trying to predict.
+
+\noindent The cost function would be given as:
+
+\begin{equation}\label{lr_cost_fn_eq}
+Cost(h_{(\theta)}(x), y) = 
+\begin{cases}
+-log(h_{(\theta)}(x)), $\qquad if y=1$
+\\
+-log(1-h_{(\theta)}(x)), $ if y=0$
+\end{cases}
+\end{equation}\\
+
+In general, the features with larger coefficients are more important because they occur more frequently and make a more significant contribution in predicting the correct class. However if a word$_{k}$ is rare, its corresponding regression coefficient ($\theta^{(k)}$) would be very small. Our goal through this thesis is to boost the regression co-efficients of similar but rare words.\\
 
 \noindent \textbf{Example:} In order to get a better understanding, consider a classification problem where we are trying to identify whether a document is talking about animals or not. For this example, let's say we only have five features. The bag-of-words representation using term frequencies for 5 different documents would look like:
 
