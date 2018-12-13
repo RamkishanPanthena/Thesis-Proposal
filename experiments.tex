@@ -4,6 +4,8 @@
 
 We compare our model to the vanilla logistic regression algorithm by implementing both using the TensorFlow library. Both the models can perform multi-class and multi-label classification. For multi-class, we use the softmax function to assign probabilities to each class which add up to 1. We use the sigmoid function for multi-label classification to train an independent logistic regression model for each class and accept all labels greater than a certain threshold as predictions.
 
+We tune our model using learning rate and regularization parameter as hyper-parameters and train with different number of epochs till the loss converges. For multi-label problems, we also use prediction threshold as one of the hyper-parameters to list labels with probabilities greater than the threshold value.
+
 \subsection{Evaluation}
 
 To evaluate the performance of both models for multi-class problems, we use accuracy and F1 measures.
