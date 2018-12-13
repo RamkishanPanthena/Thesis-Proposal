@@ -1,0 +1,48 @@
+\chapter{Experiments}
+
+\section{Baseline}
+
+We compare our model to the vanilla logistic regression algorithm by implementing both using the TensorFlow library. Both the models can perform multi-class and multi-label classification. For multi-class, we use the softmax function to assign probabilities to each class which add up to 1. We use the sigmoid function for multi-label classification to train an independent logistic regression model for each class and accept all labels greater than a certain threshold as predictions.
+
+\section{Evaluation}
+
+To evaluate the performance of both models for multi-class problems, we use accuracy and f1 measures.
+
+For multi-label problems, predictions for an instance is a set of labels, and therefore the prediction can be fully correct, partially-correct or fully-incorrect. Thus, to better evaluate our models we will use the following three measures: \textit{set accuracy}, which is the ratio of perfectly matched instances to the total number of instances; \textit{instance-f1}, which evaluates the performance of partially correct predictions averaged over instances; \textit{label-f1}, which evaluates the performance of partially correct predictions averaged over labels.\\
+
+For a dataset with ground truth labels $y^{(n)}$ and predictions $\hat{y}^{(n)}$, and n instances where n = 1,2,...,N, these three measures are defined as:
+
+\begin{alignat}{2}
+set\; accuracy & = \frac{1}{N} \sum_{n=1}^{N} {I(y^{(n)} = \hat{y}^{(n)})}\\
+instance \mbox{-} F1 & = \frac{1}{N} \sum_{n=1}^{N} \frac{2\sum_{l=1}^{L} {y^{(n)}_{l} \hat{y}^{(n)}_{l}}}{\sum_{l=1}^{L} {y^{(n)}_{l}} + \sum_{l=1}^{L} {\hat{y}^{(n)}_{l}}}\\
+label \mbox{-} F1 & = \frac{1}{N} \sum_{n=1}^{N} \frac{2\sum_{n=1}^{N} {y^{(n)}_{l} \hat{y}^{(n)}_{l}}}{\sum_{n=1}^{N} {y^{(n)}_{l}} + \sum_{n=1}^{N} {\hat{y}^{(n)}_{l}}}
+\end{alignat}
+
+\noindent where for each instance $n$, $y^{(n)}_{l}$ = 1 if label $l$ is a given label in ground truth; \\
+$\hat{y}^{(n)}_{l}$ = 1 if label $l$ is a predicted label.
+
+\section{Datasets}
+
+Below is a table showing how our model performed as compared to logistic regression. 
+
+\begin{table}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|c|c|c|c}
+Datasets & \begin{tabular}[c]{@{}c@{}}Baseline\\ Set Accuracy\end{tabular} & \begin{tabular}[c]{@{}c@{}}Our model\\ Set Accuracy\end{tabular} & \begin{tabular}[c]{@{}c@{}}Baseline\\ Instance-F1\end{tabular} & \begin{tabular}[c]{@{}c@{}}Our model\\ Instance-F1\end{tabular} \\\hline
+Slashdot & 32.63 & 34.21 & 41.18 & 43.02 \\
+Medical & 66.06 & 67.87 & 74.66 & 76.91
+\end{tabular}%
+}
+\caption{\label{tab:widgets}Set-Accuracy and Instance-F1 Results.}
+\end{table}
+
+\noindent We also trained an artificial dataset to mimic sparse representation using 20newsgroup data by finding the most similar words in the train set with cosine similarity greater than 0.3 and making the feature values of all but one synonym to be equal to zero. We then compared the performance of our model with logistic regression before and after zeroing feature values of similar words. The below results show that our model was able to get a higher test accuracy even through the sparse representations in the train set.\\
+
+\noindent \textbf{Before zeroing features:}\\
+Logistic Regression Test accuracy: 82.6\\
+Our model Test accuracy: 84.01\\
+
+\noindent \textbf{After zeroing features:}\\
+Logistic Regression Test accuracy: 75.67\\
+Our model Test accuracy: 83.54\\

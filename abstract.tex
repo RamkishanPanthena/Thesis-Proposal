@@ -1,0 +1,8 @@
+\begin{abstract}
+A simple and efficient baseline for text classification is to represent sentences as bag-of-words (BoW) and train a linear classifier. The bag-of-words model is simple to implement and offers flexibility for customization by providing different scoring techniques for user specific text data.
+
+However, a large vocabulary can cause extremely sparse representations which are harder to model, where the challenge is for models to harness very little information in such a large representational space. In such cases, the traditional linear classifiers would treat each word separately and assign them different coefficients based on the frequency in which they occur in the train set. This would result in lower test accuracy when it comes across instances where a word which was occurring less frequently in the train set, occurs more often in the test set.
+
+In this work, we are proposing a novel regularizer that would assign similar weights to words with nearly the same meaning. This will be achieved by training a neural network model by making the regression co-efficient of a word to be a function of its word-vector representation. Thus, based on how similar two features are, our proposed model can improve the feature importance of a sparse word by increasing its regression co-efficient, thereby improving the test accuracy in the above mentioned scenario.
+
+\end{abstract}
