@@ -12,7 +12,7 @@ Thus, in such a case any linear classifier like logistic regression, naive bayes
 
 Suppose we use logistic regression for binary text classification on a bag-of-words model. Let $\theta^{(i)}$ be the regression coefficients of word$_{i}$ which determines the association between each feature and what we are trying to predict.
 
-\noindent The cost function would be given as:
+\noindent The cost function for logistic regression would be given as:
 
 \begin{equation}\label{lr_cost_fn_eq}
 Cost(h_{(\theta)}(x), y) = 
@@ -23,7 +23,7 @@ Cost(h_{(\theta)}(x), y) =
 \end{cases}
 \end{equation}\\
 
-In general, the features with larger coefficients are more important because they occur more frequently and make a more significant contribution in predicting the correct class. However if a word$_{k}$ is rare, its corresponding regression coefficient ($\theta^{(k)}$) would be very small. Our goal through this thesis is to boost the regression co-efficients of similar but rare words.\\
+In general, the features with larger coefficients are more important because they occur more frequently and make a more significant contribution in predicting the correct class. However if a word$_{k}$ is rare, its corresponding regression coefficient ($\theta^{(k)}$) would be very small. Our goal through this thesis is to boost the regression co-efficients of such similar but rare words.\\
 
 \noindent \textbf{Example:} In order to get a better understanding, consider a classification problem where we are trying to identify whether a document is talking about animals or not. For this example, let's say we only have five features. The bag-of-words representation using term frequencies for 5 different documents would look like:
 
